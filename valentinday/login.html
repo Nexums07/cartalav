@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dia dos Namorados - Login</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Animação para o "pulo" do emoji ao selecionar */
+        @keyframes bounce-scale {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.3);
+            }
+        }
+        .animate-bounce-scale {
+            animation: bounce-scale 0.3s ease-in-out;
+        }
+
+        /* Estilos para as transições de entrada e saída do select */
+        /* Estado inicial (oculto) */
+        .select-options-hidden {
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+        }
+
+        /* Estado ativo (visível) */
+        .select-options-visible {
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 0.3s ease-in, transform 0.3s ease-in;
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen bg-gradient-to-r from-pink-300 to-orange-200 text-gray-800 p-4 sm:p-6 overflow-y-auto">
+    <div class="login-container bg-white p-6 sm:p-8 rounded-2xl shadow-xl text-center w-full max-w-sm sm:max-w-md md:max-w-xl lg:max-w-2xl">
+        <h1 class="text-rose-600 text-4xl sm:text-5xl mb-6 sm:mb-8">Login de segurança</h1>
+        
+        <form id="loginForm">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4">
+
+                <div>
+                    <label for="username" class="block mb-2 text-base sm:text-xl text-gray-700 text-left">Digite seu nome:</label>
+                    <input type="text" id="username" name="username" required class="w-full p-2 sm:p-3 border border-gray-300 rounded-lg text-base sm:text-lg focus:outline-none focus:ring-2 focus:ring-rose-500">
+                </div>
+
+                <div>
+                    <label id="beauty-listbox-label" class="block mb-2 text-base sm:text-xl text-gray-700 text-left">Qual é o nivel da sua beleza? (0-10)</label>
+                    <div class="relative mt-2">
+                        <button type="button" id="beautySelectButton" class="grid w-full cursor-default grid-cols-1 rounded-md bg-white py-2 pr-2 pl-3 text-left text-gray-900 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-rose-600 text-base sm:text-sm/6" aria-haspopup="listbox" aria-expanded="false" aria-labelledby="beauty-listbox-label">
+                            <span class="col-start-1 row-start-1 flex items-center gap-3 pr-6">
+                                <span id="selectedBeautyEmoji" class="size-6 shrink-0 rounded-full flex items-center justify-center text-2xl">😊</span>
+                                <span id="selectedBeautyValue" class="block truncate">5</span>
+                            </span>
+                            <svg class="col-start-1 row-start-1 size-5 self-center justify-self-end text-gray-500 sm:size-4" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+                                <path fill-rule="evenodd" d="M5.22 10.22a.75.75 0 0 1 1.06 0L8 11.94l1.72-1.72a.75.75 0 1 1 1.06 1.06l-2.25 2.25a.75.75 0 0 1-1.06 0l-2.25-2.25a.75.75 0 0 1 0-1.06ZM10.78 5.78a.75.75 0 0 1-1.06 0L8 4.06 6.28 5.78a.75.75 0 0 1-1.06-1.06l2.25-2.25a.75.75 0 0 1 1.06 0l2.25 2.25a.75.75 0 0 1 0 1.06Z" clip-rule="evenodd" />
+                            </svg>
+                        </button>
+
+                        <ul id="beautyOptions" class="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm hidden select-options-hidden" tabindex="-1" role="listbox" aria-labelledby="beauty-listbox-label">
+                            </ul>
+                    </div>
+                </div>
+
+                <div>
+                    <label for="age" class="block mb-2 text-base sm:text-xl text-gray-700 text-left">Qual a sua idade?</label>
+                    <input type="number" id="age" name="age" required class="w-full p-2 sm:p-3 border border-gray-300 rounded-lg text-base sm:text-lg focus:outline-none focus:ring-2 focus:ring-rose-500" min="0">
+                </div>
+
+                <div>
+                    <label id="voice-listbox-label" class="block mb-2 text-base sm:text-xl text-gray-700 text-left">Quem tem a voz mais linda desse mundo?</label>
+                    <div class="relative mt-2">
+                        <button type="button" id="voiceSelectButton" class="grid w-full cursor-default grid-cols-1 rounded-md bg-white py-2 pr-2 pl-3 text-left text-gray-900 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-rose-600 text-base sm:text-sm/6" aria-haspopup="listbox" aria-expanded="false" aria-labelledby="voice-listbox-label">
+                            <span class="col-start-1 row-start-1 flex items-center gap-3 pr-6">
+                                <span id="selectedVoiceEmoji" class="size-6 shrink-0 rounded-full flex items-center justify-center text-2xl">🎤</span>
+                                <span id="selectedVoiceValue" class="block truncate">Escolha a resposta</span>
+                            </span>
+                            <svg class="col-start-1 row-start-1 size-5 self-center justify-self-end text-gray-500 sm:size-4" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+                                <path fill-rule="evenodd" d="M5.22 10.22a.75.75 0 0 1 1.06 0L8 11.94l1.72-1.72a.75.75 0 1 1 1.06 1.06l-2.25 2.25a.75.75 0 0 1-1.06 0l-2.25-2.25a.75.75 0 0 1 0-1.06ZM10.78 5.78a.75.75 0 0 1-1.06 0L8 4.06 6.28 5.78a.75.75 0 0 1-1.06-1.06l2.25-2.25a.75.75 0 0 1 1.06 0l2.25 2.25a.75.75 0 0 1 0 1.06Z" clip-rule="evenodd" />
+                            </svg>
+                        </button>
+
+                        <ul id="voiceOptions" class="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm hidden select-options-hidden" tabindex="-1" role="listbox" aria-labelledby="voice-listbox-label">
+                            </ul>
+                    </div>
+                </div>
+
+                <div class="sm:col-span-2">
+                    <label for="sisters" class="block mb-2 text-base sm:text-xl text-gray-700 text-left">Quantas irmãs você tem?</label>
+                    <input type="number" id="sisters" name="sisters" required class="w-full p-2 sm:p-3 border border-gray-300 rounded-lg text-base sm:text-lg focus:outline-none focus:ring-2 focus:ring-rose-500" min="0">
+                </div>
+
+                <div class="sm:col-span-2">
+                    <label for="bestFriend" class="block mb-2 text-base sm:text-xl text-gray-700 text-left">Quem é a sua melhor amiga?</label>
+                    <input type="text" id="bestFriend" name="bestFriend" required class="w-full p-2 sm:p-3 border border-gray-300 rounded-lg text-base sm:text-lg focus:outline-none focus:ring-2 focus:ring-rose-500">
+                </div>
+
+            </div> <button type="submit" class="bg-rose-600 text-white py-3 sm:py-4 px-6 sm:px-8 rounded-lg text-lg sm:text-xl cursor-pointer hover:bg-rose-700 transition duration-300 mt-6 sm:mt-8 w-full">Entrar</button>
+            <p id="errorMessage" class="error-message text-red-500 mt-4 text-base"></p>
+        </form>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
